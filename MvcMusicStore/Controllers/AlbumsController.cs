@@ -14,13 +14,28 @@ namespace MvcMusicStore.Controllers
     {
         private StoreContext db = new StoreContext();
 
+        public ActionResult DisplayerByArtist(int artistID)
+        {
+            //imagine code here!!
+            return View();
+        }
+
         // GET: Albums
+        //custom url routing!
+        [Route("Albums/All")]
+        //**
+
         public ActionResult Index()
         {
-            return View(db.Albums.ToList());
+            //let's get the model
+            var albums = db.Albums.ToList();
+
+            // combine the model with the view and return
+            return View(albums);
         }
 
         // GET: Albums/Details/5
+        [Route("Album/{id:int}")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,6 +51,12 @@ namespace MvcMusicStore.Controllers
         }
 
         // GET: Albums/Create
+        // Automatically uses get
+        // this displays the form to the user
+
+        //** This is how to set a place to require login account
+        //[Authorize()]
+        //** does not have to be here also you can make it so the whole site needs it with positon
         public ActionResult Create()
         {
             return View();
@@ -44,9 +65,10 @@ namespace MvcMusicStore.Controllers
         // POST: Albums/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // accepts the input from the user
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AlbumID,Title")] Album album)
+        public ActionResult Create(Album album)
         {
             if (ModelState.IsValid)
             {
